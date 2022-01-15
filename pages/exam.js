@@ -97,6 +97,7 @@ export default function Exam() {
 						{loading ? (
 							exams.map((e) => (
 								<div
+									key={e._id}
 									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
 									onClick={() =>
 										router.push({
@@ -108,7 +109,6 @@ export default function Exam() {
 									}
 								>
 									<ExamItem
-										key={e._id}
 										id={e._id}
 										name={e.name}
 										minuteLimit={e.minuteLimit}
