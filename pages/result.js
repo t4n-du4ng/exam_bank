@@ -15,7 +15,6 @@ export default function Result() {
 
 	useEffect(() => {
 		const handleGetResult = async () => {
-			console.log(router.query.idExam);
 			try {
 				const url = `${process.env.NEXT_PUBLIC_API_URL}/exams/${router.query.idExam}/review`;
 				const res = await axios.get(url, {
@@ -23,7 +22,6 @@ export default function Result() {
 						access_token: localStorage.getItem("REFRESH_TOKEN"),
 					},
 				});
-				console.log(res.data);
 				setExamReview(res.data);
 				setLoading(true);
 			} catch (error) {
@@ -41,7 +39,7 @@ export default function Result() {
 			</Head>
 
 			<Header />
-			<section className="w-full">
+			<section className="w-full min-h-[76.5vh]">
 				{loading ? <ViewResult examReview={examReview} /> : <Loading />}
 			</section>
 			<Footer />

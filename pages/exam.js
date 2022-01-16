@@ -71,7 +71,7 @@ export default function Exam() {
 
 			<Header />
 
-			<section className="flex py-5 px-5">
+			<section className="flex py-5 px-5 min-h-screen">
 				<div className="flex-1 py-5 md:py-10 p-0 sm:px-5 md:px-20 ">
 					<div className="xl:w-4/5 bg-gray-200 bg-opacity-40 shadow-md">
 						<div className="flex justify-between items-center sm:px-5 sm:py-3 p-3">
@@ -99,32 +99,36 @@ export default function Exam() {
 								<div
 									key={e._id}
 									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
-									onClick={() =>
-										router.push({
-											pathname: e.isDone ? "result" : "takeExam",
-											query: {
-												idExam: e._id,
-											},
-										})
-									}
 								>
-									<ExamItem
-										id={e._id}
-										name={e.name}
-										minuteLimit={e.minuteLimit}
-										creator={e.creator.name}
-										openDate={moment
-											.utc(e.openedAt)
-											.local()
-											.format("DD/MM/YYYY")}
-										isDone={e.isDone}
-									/>
+									<div
+										className="w-full"
+										onClick={() =>
+											router.push({
+												pathname: e.isDone ? "result" : "takeExam",
+												query: {
+													idExam: e._id,
+												},
+											})
+										}
+									>
+										<ExamItem
+											id={e._id}
+											name={e.name}
+											minuteLimit={e.minuteLimit}
+											creator={e.creator.name}
+											openDate={moment
+												.utc(e.openedAt)
+												.local()
+												.format("DD/MM/YYYY")}
+											isDone={e.isDone}
+										/>
+									</div>
 
 									{e.isEditable && user?.role == "teacher" && (
 										<div className="flex flex-col">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												className="h-6 w-6 cursor-pointer mt-3"
+												className="h-10 w-10 cursor-pointer mt-3 hover:bg-gray-50 p-2 rounded-full"
 												fill="none"
 												viewBox="0 0 24 24"
 												stroke="currentColor"
@@ -146,7 +150,7 @@ export default function Exam() {
 											</svg>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												className="h-6 w-6 cursor-pointer mt-3"
+												className="h-10 w-10 cursor-pointer mt-3 hover:bg-gray-50 p-2 rounded-full"
 												fill="none"
 												viewBox="0 0 24 24"
 												stroke="currentColor"
@@ -166,10 +170,6 @@ export default function Exam() {
 						) : (
 							<>
 								<Loading />
-								<Loading />
-								<Loading />
-								<Loading />
-								<Loading />
 							</>
 						)}
 
@@ -188,14 +188,15 @@ export default function Exam() {
 					<div className="grid grid-cols-1 gap-3 place-items-center">
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Toán",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -206,14 +207,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Tiếng anh",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -224,14 +226,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Vật lý",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -242,14 +245,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Hóa học",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -260,14 +264,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Sinh học",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -278,14 +283,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Lịch sử",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -296,14 +302,15 @@ export default function Exam() {
 						</div>
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Địa lý",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"
@@ -315,14 +322,15 @@ export default function Exam() {
 
 						<div
 							className="border border-gray-300 cursor-pointer"
-							onClick={() =>
+							onClick={() => {
+								setLoading(false);
 								router.push({
 									pathname: "exam",
 									query: {
 										subject: "Giáo dục công dân",
 									},
-								})
-							}
+								});
+							}}
 						>
 							<img
 								className="object-cover w-64 h-16"

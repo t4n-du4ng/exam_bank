@@ -1,15 +1,15 @@
 import { useRouter } from "next/dist/client/router";
-import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import ExamForm from "./ExamForm";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import ExamForm from "./ExamForm";
 
 // Done form: question-answer-rightAnswer - 14-10-2021
 // Done form: auto submit when timeout - 19-10-2021
 
 const customStyles = {
 	content: {
+		textAlign: "center",
+		padding: "30px 60px",
 		top: "50%",
 		left: "50%",
 		right: "auto",

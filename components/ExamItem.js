@@ -1,5 +1,3 @@
-import router from "next/router";
-
 function ExamItem({ id, name, minuteLimit, creator, openDate, isDone }) {
 	return (
 		<div className="py-2">
@@ -21,8 +19,9 @@ function ExamItem({ id, name, minuteLimit, creator, openDate, isDone }) {
 					</svg>
 
 					<h3
-						className={`text-md md:text-xl xl:text-2xl ${isDone ? "text-green-500" : "text-yellow-500"
-							} font-semibold ml-2 cursor-pointer`}
+						className={`text-md md:text-xl xl:text-2xl ${
+							isDone ? "text-green-500" : "text-yellow-500"
+						} font-semibold ml-2 cursor-pointer`}
 					>
 						{name}
 					</h3>

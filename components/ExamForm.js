@@ -1,14 +1,13 @@
+import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
-import { modifiedOption } from "../utils/modifiedOption";
 import { initAnswers } from "../store/slices/answerSlice";
-import Question from "./Question";
-import axios from "axios";
-import moment from "moment";
 import diffTime from "../utils/diffTime";
+import { modifiedOption } from "../utils/modifiedOption";
+import Question from "./Question";
 
 // Create form: question-option-correctOption - 14-10-2021
 // Update form: auto submit when timeout - 19-10-2021
@@ -30,7 +29,8 @@ const customStyles = {
 
 export default function ExamForm({ timeout, questions, idExam }) {
 	const router = useRouter();
-
+	const [loading, setLoading] = useState(false);
+	const [isSuccess, setIsSuccess] = useState(false);
 	const [submit, setSubmit] = useState(false); // Xử lý hết thời gian
 
 	const dispatch = useDispatch();
@@ -55,12 +55,12 @@ export default function ExamForm({ timeout, questions, idExam }) {
 					fields[`option${i}`] == e.options[0]?._id
 						? "A"
 						: fields[`option${i}`] == e.options[1]?._id
-							? "B"
-							: fields[`option${i}`] == e.options[2]?._id
-								? "C"
-								: fields[`option${i}`] == e.options[3]?._id
-									? "D"
-									: null,
+						? "B"
+						: fields[`option${i}`] == e.options[2]?._id
+						? "C"
+						: fields[`option${i}`] == e.options[3]?._id
+						? "D"
+						: null,
 				);
 			else selectedOptions.push(null);
 		});
@@ -68,8 +68,8 @@ export default function ExamForm({ timeout, questions, idExam }) {
 		const action =
 			questions?.length != null
 				? selectedOptions.some(
-					(e) => e === "A" || e === "B" || e === "C" || e === "D",
-				)
+						(e) => e === "A" || e === "B" || e === "C" || e === "D",
+				  )
 					? initAnswers(selectedOptions)
 					: initAnswers(questions?.length)
 				: initAnswers(0);
@@ -87,10 +87,9 @@ export default function ExamForm({ timeout, questions, idExam }) {
 		const startTime = localStorage.getItem(`startTime_${idExam}`);
 		const takingTime = diffTime(startTime);
 		data = modifiedOption(data, takingTime);
-
+		setLoading(true);
 		const handleSubmitExam = async () => {
 			try {
-				//const url = `http://localhost:5000/login`;
 				const res = await axios.post(
 					`${process.env.NEXT_PUBLIC_API_URL}/exams/${router.query.idExam}/take`,
 					data,
@@ -100,6 +99,17 @@ export default function ExamForm({ timeout, questions, idExam }) {
 						},
 					},
 				);
+				if (res.data) {
+					setIsSuccess(true);
+					setTimeout(() => {
+						router.push({
+							pathname: "result",
+							query: {
+								idExam: idExam,
+							},
+						});
+					}, 1000);
+				}
 			} catch (error) {
 				console.log("Failed to submit exam:", error);
 			}
@@ -167,31 +177,51 @@ export default function ExamForm({ timeout, questions, idExam }) {
 				contentLabel="Modal"
 				ariaHideApp={false}
 			>
-				<h2 className="font-bold text-xl text-red-500">Xác nhận nộp bài</h2>
-				{/* nếu click thì gọi ref của button submit thật để submit */}
+				{loading ? (
+					isSuccess ? (
+						<h2 className="font-bold text-xl text-green-500">Thành công</h2>
+					) : (
+						<div className="flex items-center">
+							<h2 className="font-bold text-xl text-blue-600 mr-3 ">
+								Đang nộp bài ...
+							</h2>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="animate-bounce h-6 w-6"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+								/>
+							</svg>
+						</div>
+					)
+				) : (
+					<>
+						<h2 className="font-bold text-xl text-red-500">Xác nhận nộp bài</h2>
+						{/* nếu click thì gọi ref của button submit thật để submit */}
 
-				<div className="flex justify-around mt-5">
-					<button
-						className="bg-blue-400 py-2 px-8 mt-4 mr-3 font-bold text-gray-50 text-lg rounded-lg"
-						onClick={() => {
-							buttonSubmit.current.click();
-							router.push({
-								pathname: "result",
-								query: {
-									idExam: idExam,
-								},
-							});
-						}}
-					>
-						Nộp bài
-					</button>
-					<button
-						className="bg-yellow-400 py-2 px-8 mt-4 ml-3 font-bold text-gray-50 text-lg rounded-lg"
-						onClick={() => setSubmit(false)}
-					>
-						Làm bài tiếp
-					</button>
-				</div>
+						<div className="flex justify-around mt-5">
+							<button
+								className="bg-blue-400 py-2 px-8 mt-4 mr-3 font-bold text-gray-50 text-lg rounded-lg"
+								onClick={() => buttonSubmit.current.click()}
+							>
+								Nộp bài
+							</button>
+							<button
+								className="bg-yellow-400 py-2 px-8 mt-4 ml-3 font-bold text-gray-50 text-lg rounded-lg"
+								onClick={() => setSubmit(false)}
+							>
+								Làm bài tiếp
+							</button>
+						</div>
+					</>
+				)}
 			</Modal>
 		</div>
 	);

@@ -1,16 +1,17 @@
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useRef, useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import Cookies from "universal-cookie";
-import { login } from "../store/slices/userSlice";
+import axios from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Cookies from "universal-cookie";
+import * as Yup from "yup";
+import { login } from "../store/slices/userSlice";
 
 function SignUp() {
 	const dispatch = useDispatch();
 	const [error, setError] = useState();
+	const [loading, setLoading] = useState(false);
 
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required("Hãy nhập Họ tên"),
@@ -31,14 +32,14 @@ function SignUp() {
 	} = useForm(formOptions);
 
 	const onSubmit = (data) => {
-		console.log("data register", data);
+		setLoading(true);
 		const handleRegister = async () => {
 			try {
 				//const url = `http://localhost:5000/login`;
 				const res = await axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
-                    data
-                );
+					`${process.env.NEXT_PUBLIC_API_URL}/users/register`,
+					data,
+				);
 
 				if (res.data.message === "Success") {
 					const handleLogin = async () => {
@@ -72,7 +73,10 @@ function SignUp() {
 				} else {
 				}
 			} catch (error) {
-				if (error.toString().includes("401")) setError("Tài khoản đã tồn tại");
+				if (error.toString().includes("401")) {
+					setLoading(false);
+					setError("Tài khoản đã tồn tại");
+				}
 				console.log("Failed to fetch exam:", error);
 			}
 		};
@@ -236,6 +240,24 @@ function SignUp() {
 						>
 							Đăng ký
 						</button>
+					</div>
+					<div className="flex justify-center">
+						{loading ? (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="animate-ping h-4 w-4 mt-3"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+								/>
+							</svg>
+						) : null}
 					</div>
 				</form>
 			</div>

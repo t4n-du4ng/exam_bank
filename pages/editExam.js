@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 import EditExamForm from "../components/EditExamForm";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 // Done form: question-answer-rightAnswer - 14-10-2021
 
 export default function EditExam() {
 	const router = useRouter();
 	const [exam, setExam] = useState([]);
+	const [loading, setLoading] = useState(false);
+
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
@@ -24,7 +27,10 @@ export default function EditExam() {
 					},
 				});
 
-				if (res.data) setExam(res.data);
+				if (res.data) {
+					setLoading(true);
+					setExam(res.data);
+				}
 			} catch (error) {
 				console.log("Failed to fetch exam:", error);
 			}
@@ -40,8 +46,14 @@ export default function EditExam() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			<div className="p-5">
-				<EditExamForm exam={exam} />
+			<div className="min-h-screen">
+				{loading ? (
+					<div className="p-5 min-h-screen">
+						<EditExamForm exam={exam} />
+					</div>
+				) : (
+					<Loading />
+				)}
 			</div>
 			<Footer />
 		</div>

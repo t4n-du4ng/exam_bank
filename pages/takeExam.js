@@ -9,7 +9,6 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import StateBox from "../components/StateBox";
-import { initTime } from "../store/slices/timeSlice";
 
 // Done form: question-answer-rightAnswer - 14-10-2021
 // Done form: auto submit when timeout - 19-10-2021
@@ -32,6 +31,7 @@ export default function TakeExam() {
 						access_token: token,
 					},
 				});
+				console.log(res.data);
 
 				localStorage.setItem(
 					`time_${router.query.idExam}`,
@@ -42,7 +42,7 @@ export default function TakeExam() {
 						`startTime_${router.query.idExam}`,
 						moment().format("DD/MM/YYYY HH:mm:ss"),
 					);
-				console.log(res.data);
+
 				setExam(res.data);
 				setLoading(true);
 			} catch (error) {
@@ -60,14 +60,16 @@ export default function TakeExam() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header disable={true} />
-			{loading ? (
-				<div className="flex justify-between my-10 flex-col md:flex-row">
-					<BodyExam exam={exam} />
-					<StateBox id={exam._id} />
-				</div>
-			) : (
-				<Loading />
-			)}
+			<div className="min-h-screen">
+				{loading ? (
+					<div className="flex justify-between my-10 flex-col md:flex-row">
+						<BodyExam exam={exam} />
+						<StateBox id={exam._id} />
+					</div>
+				) : (
+					<Loading />
+				)}
+			</div>
 			<Footer disable={true} />
 		</div>
 	);

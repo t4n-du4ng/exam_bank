@@ -2,7 +2,6 @@ import moment from "moment";
 import router from "next/router";
 
 function ViewResult({ examReview }) {
-	console.log(examReview);
 	const takingTime = moment
 		.utc(examReview?.secondTaken * 1000)
 		.format("HH:mm:ss");
@@ -13,7 +12,7 @@ function ViewResult({ examReview }) {
 	const seconds = parseInt(arrDiff[2]);
 
 	return (
-		<div className="flex justify-center my-20 md:my-14">
+		<div className="flex justify-center py-20 md:py-14">
 			<div className=" w-full sm:w-2/3 md:w-3/4 lg:w-1/2 mx-3 px-3 py-5 lg:py-12 sm:p-12 md:px-20 bg-gray-300 bg-opacity-25 shadow-lg">
 				<div className="mb-3">
 					<span className="text-3xl font-bold text-green-800 ">
@@ -59,42 +58,46 @@ function ViewResult({ examReview }) {
 				<div className="text-center my-3"></div>
 				<div className="flex justify-center my-3 lg:my-10">
 					<table className="w-full">
-						<tr className="bg-blue-400 text-white">
-							<th className="w-1/2">Trạng thái</th>
-							<th className="w-1/4">Thời gian</th>
-							<th className="w-1/4">Kết quả</th>
-						</tr>
-						<tr>
-							<td>
-								<h5>Hoàn thành</h5>
-								<p>
-									Nộp lúc{" "}
-									{moment
-										.utc(examReview?.submittedAt)
-										.local()
-										.format("DD/MM/YYYY h:mm:ss a")}
-								</p>
-							</td>
-							<td className="text-center">
-								{hours === 0
-									? null
-									: hours < 10
-									? hours + " giờ "
-									: hours + " phút "}
-								{minutes === 0
-									? hours > 0
-										? " "
-										: null
-									: minutes < 10
-									? minutes + " phút "
-									: minutes + " phút"}
-								{seconds === 0 ? "" : seconds + " giây"}
-							</td>
-							<td className="text-center font-bold">
-								<span className="text-red-600">{examReview?.outOf}</span>/
-								{examReview?.exam?.questions?.length}
-							</td>
-						</tr>
+						<tbody className="bg-blue-400 text-white">
+							<tr>
+								<th className="w-1/2">Trạng thái</th>
+								<th className="w-1/4">Thời gian</th>
+								<th className="w-1/4">Kết quả</th>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<td>
+									<h5>Hoàn thành</h5>
+									<p>
+										Nộp lúc{" "}
+										{moment
+											.utc(examReview?.submittedAt)
+											.local()
+											.format("DD/MM/YYYY h:mm:ss a")}
+									</p>
+								</td>
+								<td className="text-center">
+									{hours === 0
+										? null
+										: hours < 10
+										? hours + " giờ "
+										: hours + " phút "}
+									{minutes === 0
+										? hours > 0
+											? " "
+											: null
+										: minutes < 10
+										? minutes + " phút "
+										: minutes + " phút"}
+									{seconds === 0 ? "" : seconds + " giây"}
+								</td>
+								<td className="text-center font-bold">
+									<span className="text-red-600">{examReview?.outOf}</span>/
+									{examReview?.exam?.questions?.length}
+								</td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 				<div className="flex justify-center mb-5">

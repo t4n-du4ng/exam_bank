@@ -2,7 +2,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { timeout } from "../store/slices/timeSlice";
 import AnswersBox from "./AnswersBox";
 import Time from "./Time";
@@ -21,7 +21,6 @@ function StateBox({ id }) {
 	const [timeRemain, setTimeRemain] = useState(15 * 60);
 
 	//const id = router.query.idExam;
-	console.log(id);
 	useEffect(() => {
 		setTime(parseInt(localStorage.getItem(`time_${id}`)) * 60);
 		setTimeRemain(parseInt(localStorage.getItem(`time_${id}`)) * 60);

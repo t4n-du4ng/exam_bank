@@ -16,14 +16,11 @@ export default function Admin() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-				<SimpleSidebar>
-					{
-						router.query.name == "User" && <UserAdmin/>
-					}
-					{
-						(router.query.name == undefined ||router.query.name == "Dashboard" ) && <Dashboard/>
-					}
-				</SimpleSidebar>
+			<SimpleSidebar>
+				{router.query.name == "User" && <UserAdmin />}
+				{(router.query.name == undefined ||
+					router.query.name == "Dashboard") && <Dashboard />}
+			</SimpleSidebar>
 			<Footer />
 		</div>
 	);

@@ -1,16 +1,18 @@
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { login } from "../store/slices/userSlice";
 import axios from "axios";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
-import authApi from "../pages/api/authApi";
+import { login } from "../store/slices/userSlice";
+
 function SignIn() {
 	const dispatch = useDispatch();
 	const { register, handleSubmit } = useForm();
 	const [error, setError] = useState();
+	const [loading, setLoading] = useState(false);
 
 	const onSubmit = (data) => {
+		setLoading(true);
 		const handleLogin = async () => {
 			try {
 				const url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
@@ -29,9 +31,13 @@ function SignIn() {
 				} else {
 				}
 			} catch (error) {
-				if (error.toString().includes("401")) setError("Sai mật khẩu");
-				else if (error.toString().includes("406"))
+				if (error.toString().includes("401")) {
+					setLoading(false);
+					setError("Sai mật khẩu");
+				} else if (error.toString().includes("406")) {
+					setLoading(false);
 					setError("Tài khoản không tồn tại");
+				}
 				console.log("Failed to login", error);
 			}
 		};
@@ -78,6 +84,7 @@ function SignIn() {
 							</span>
 						)}
 					</div>
+
 					<div className="flex items-center justify-between">
 						<button
 							className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded focus:outline-none focus:shadow-outline relative before:absolute before:top-0 before:left-0 before:w-full before:h-full before:border-2 before:border-transparent before:rounded before:tranform hover:before:scale-x-110 hover:before:scale-y-125
@@ -92,6 +99,24 @@ function SignIn() {
 						>
 							Quên mật khẩu?
 						</a>
+					</div>
+					<div className="flex justify-center">
+						{loading ? (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="animate-ping h-5 w-5 mt-2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+								/>
+							</svg>
+						) : null}
 					</div>
 				</form>
 			</div>

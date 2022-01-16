@@ -1,4 +1,3 @@
-import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import CreateExamForm from "../components/CreateExamForm";
 import Footer from "../components/Footer";
@@ -7,8 +6,6 @@ import Header from "../components/Header";
 // Done form: question-answer-rightAnswer - 14-10-2021
 
 export default function CreateExam() {
-	const router = useRouter();
-
 	return (
 		<div className="w-auto">
 			<Head>
@@ -17,7 +14,7 @@ export default function CreateExam() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			<div className="p-5">
+			<div className="p-5 min-h-screen">
 				<CreateExamForm />
 			</div>
 			<Footer />

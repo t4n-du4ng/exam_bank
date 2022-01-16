@@ -1,11 +1,9 @@
 import router from "next/router";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/slices/userSlice";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import axios from "axios";
 
 function Header({ disable }) {
 	const [signIn, setSignIn] = useState(false);

@@ -30,7 +30,7 @@ export default function ResultDetail() {
 			</Head>
 
 			<Header />
-			<div className="flex-1 flex flex-col ml-8 md:ml-40 mr-8 md:mr-20 my-10 py-10 px-4 md:px-10 bg-gray-200 bg-opacity-25">
+			<div className="min-h-screen flex-1 flex flex-col ml-8 md:ml-40 mr-8 md:mr-20 my-10 py-10 px-4 md:px-10 bg-gray-200 bg-opacity-25">
 				<div className="mb-6 md:mb-0">
 					<span className="text-3xl font-bold text-green-800">
 						{exam?.exam?.subject} |
